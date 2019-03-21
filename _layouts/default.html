@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="no-js">
+
+<head>
+	<meta charset="utf-8">
+  {% if page.noindex %}
+	  <meta name="robots" content="noindex">
+  {% endif %}
+
+	<title>{{ page.title }} | Social </title>
+
+	<meta name="description" content="{% if page.meta_description %}{{ page.meta_description }}{% else %}{{ site.description }}{% endif %}">
+	<meta name="viewport" content="width=device-width">
+	<link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico?v=3">
+	<link rel="canonical" href="https://eli-nathan.github.io{{ site.baseurl }}{{page.url}}">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css">
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/styles.css">
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/darcula-theme.css">
+</head>
+
+<body>
+
+	{{ content }}
+
+	{% include scripts.html %}
+
+</body>
+
+</html>
