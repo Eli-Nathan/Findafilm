@@ -1,10 +1,12 @@
 // Bootstrap
 @import 'bootstrap/bootstrap.scss';
 
-@import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700');
+$highlight: #fe3646;
+
+@import url('https://fonts.googleapis.com/css?family=Bitter:700|Mukta:400,600');
 
 body {
-  font-family: 'Ubuntu Mono', monospace, 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Mukta', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   position: relative;
 
   &.no-scroll {
@@ -12,260 +14,16 @@ body {
   }
 }
 
-.gallery-image {
-  position: relative;
-  width: 100%;
-
-  &__image {
-    width: 100%;
-    transition: .5s;
-    overflow: hidden;
-
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
-  &__overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    transition: .3s ease;
-    background-color: rgba(#fff, .2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &:hover {
-    .gallery-image__overlay {
-      opacity: 1;
-    }
-  }
-
-  .icon {
-    color: white;
-    font-size: 100px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Bitter', serif;
+  font-weight: 700;
 }
 
-.lightbox {
-  display: none;
-  z-index: 1000;
-  overflow: scroll;
-
-  &--visible {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(#000, .9);
-    color: #fff;
-
-    .imageContainer {
-      align-items: center;
-      justify-content: center;
-
-      figure {
-        width: 100vw;
-        position: relative;
-        margin: 0;
-
-        .overlays {
-          position: absolute;
-
-          @include media-breakpoint-up(md) {
-            width: 48%;
-            margin: 0 auto;
-            left: 26%;
-            height: 90%;
-          }
-
-          @include media-breakpoint-up(lg) {
-            height: 92%;
-          }
-
-          @include media-breakpoint-up(xl) {
-            margin-top: $spacer*3;
-            width: 50%;
-            left: 25%;
-            height: 83%;
-          }
-
-          .overlay {
-            width: 50%;
-            height: 100%;
-            float: left;
-          }
-        }
-
-        img {
-          width: 95%;
-
-          @include media-breakpoint-up(md) {
-            width: 48%;
-          }
-
-          @media (min-width: 1800px) {
-            margin-top: $spacer*16;
-            width: 50%;
-          }
-        }
-
-        .caption {
-          width: 95%;
-
-          @include media-breakpoint-up(md) {
-            width: 50%;
-          }
-        }
-      }
-    }
-
-    .caption {
-      width: 95%;
-      margin-bottom: 24px;
-
-      @include media-breakpoint-up(md) {
-        width: 75%;
-        text-align: center;
-      }
-
-      @include media-breakpoint-up(lg) {
-        width: 50%;
-      }
-    }
-
-    .thumbs {
-      width: 95%;
-      display: block;
-
-      @include media-breakpoint-up(md) {
-        width: 75%;
-        overflow: hidden;
-        scroll-behavior: smooth;
-        overflow-x:scroll;
-        white-space:nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      @include media-breakpoint-up(lg) {
-        width: 50%;
-      }
-
-      &.flex-xxl {
-        @include media-breakpoint-up(xxl) {
-          display: flex;
-          justify-content: center;
-        }
-      }
-
-      .thumb {
-        width: 100%;
-        margin-top: 24px;
-        cursor: pointer;
-
-        @include media-breakpoint-up(md) {
-          width: 100px;
-          display:inline-block;
-          margin-right: 14px;
-
-          &:last-of-type {
-            margin-right: 0;
-          }
-        }
-
-        &--active {
-          @include media-breakpoint-up(md) {
-            border: 2px solid #fff;
-          }
-        }
-
-        figure {
-          margin: 0;
-        }
-
-        img {
-          width: 100%;
-        }
-
-        .caption {
-          width: 100%;
-          margin-bottom: 24px;
-
-          @include media-breakpoint-up(md) {
-            margin-bottom: 48px;
-            width: 75%;
-          }
-
-          @include media-breakpoint-up(lg) {
-            width: 50%;
-          }
-        }
-      }
-    }
-
-    .close-button {
-      position: fixed;
-      width: 48px;
-      height: 48px;
-      right: 0;
-      top: 0;
-      margin: 18px 21px;
-      background: transparent url("/assets/images/close.svg") no-repeat center center / contain;
-      border: none;
-      cursor: pointer;
-
-      @include media-breakpoint-up(md) {
-        position: absolute;
-        margin: 1% 1%;
-      }
-    }
-
-    .arrows {
-      .arrow {
-        width: 50px;
-        height: 50px;
-        border: none;
-        cursor: pointer;
-      }
-
-      &__left {
-        background: url("/assets/images/left-arrow.svg") no-repeat center center / contain;
-
-        @include media-breakpoint-up(md) {
-          left: 19%;
-        }
-
-        @include media-breakpoint-up(lg) {
-          left: 20%;
-        }
-      }
-
-      &__right {
-        background: url("/assets/images/right-arrow.svg") no-repeat center center / contain;
-
-        @include media-breakpoint-up(md) {
-          right: 19%;
-        }
-
-        @include media-breakpoint-up(lg) {
-          right: 20%;
-        }
-      }
-    }
-  }
+.highlight-text {
+  color: $highlight
 }
