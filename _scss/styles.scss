@@ -27,3 +27,35 @@ h6 {
 .highlight-text {
   color: $highlight
 }
+
+.genre-box {
+  position: relative;
+  height: 120px;
+  margin-bottom: $spacer*2;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 4px;
+
+  &__overlay {
+    border-radius: 4px;
+    transition: .3s;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, .6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 22px;
+
+    &:hover {
+      background-color: rgba(darken($highlight, 10%), .5);
+      text-shadow: 1px 1px 6px #000;
+    }
+  }
+}
