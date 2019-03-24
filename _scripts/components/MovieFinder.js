@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from "axios"
 import Promise from 'es6-promise'
+import GenreBox from "./GenreBox";
 
 // ES6 promise and Axios needed for IE
 require('es6-promise').polyfill()
@@ -15,7 +16,9 @@ class MovieFinder extends Component {
       loading: true
     }
 
-    this.getGenres();
+    this.getGenres = this.getGenres.bind(this)
+    this.getMovies = this.getMovies.bind(this)
+    this.getGenres()
   }
 
   // Remove spaces from string and conver to lower case
@@ -25,7 +28,7 @@ class MovieFinder extends Component {
 
   async getGenres() {
     const genreAPI = "https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=dac5b022e22ea5e143299240ca8c8d68"
-    // Use this
+
     let _this = this
     try {
       // Use ES7's await along with async to only return this function when it's finished getting the data
@@ -49,43 +52,80 @@ class MovieFinder extends Component {
     }
   }
 
-  genreBoxStyle = (imageName) => {
-    let imagePath = "/assets/images/genres/" + this.removeSpacesFromString(imageName) + ".jpg"
-    // Prepend cors.io link to dataURL if we're working locally
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      imagePath = imagePath
+  async getMovies(e, id) {
+    e.preventDefault()
+    const moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&api_key=dac5b022e22ea5e143299240ca8c8d68"
+    let _this = this
+    // Use this
+    try {
+      // Use ES7's await along with async to only return this function when it's finished getting the data
+      const response = await axios.get(moviesAPI).then(async function(movies) {
+        let totalPages = movies.data.total_pages
+        if (totalPages > 1000) totalPages = 1000
+        let randPage = Math.floor(Math.random() * (totalPages - 1) + 1)
+        let randResult = Math.floor(Math.random() * (19 - 0))
+        const randMoviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&page=" + randPage +"&api_key=dac5b022e22ea5e143299240ca8c8d68"
+
+        try {
+          // Use ES7's await along with async to only return this function when it's finished getting the data
+          const randResponse = await axios.get(randMoviesAPI).then(function(movies) {
+            _this.setState({
+              currentMovie: movies.data.results[randResult],
+              currentGenre: id,
+              loading: false
+            })
+          })
+        }
+        // Console warn the error if there is one
+        catch(error) {
+          console.warn(error)
+        }
+      })
     }
-    else {
-      imagePath = "/Findafilm" + imagePath
-    }
-    return {
-      backgroundImage: "url(" + imagePath + ")"
+    // Console warn the error if there is one
+    catch(error) {
+      console.warn(error)
     }
   }
 
   renderGenres = () => {
     const output = this.state.allGenres.map((genre, i) => {
       return (
-        <div key={genre.id} className="col-6 col-sm-4 col-md-3">
-          <div
-            className={"genre-box text-center genre-box--" + this.removeSpacesFromString(genre.name)}
-            style={this.genreBoxStyle(this.removeSpacesFromString(genre.name))}
-          >
-            <div className="genre-box__overlay">
-              {genre.name}
-            </div>
-          </div>
-        </div>
+        <GenreBox
+          key={genre.id}
+          name={genre.name}
+          i={i}
+          id={genre.id}
+          click={this.getMovies}
+        />
       )
     })
     return output
+  }
+
+  reset = (e) => {
+    e.preventDefault()
+    this.setState({
+      currentMovie: false
+    })
+  }
+
+  renderMovie = () => {
+    return (
+      <div className="col-sm-12">
+        <h1 className="text-center">{this.state.currentMovie.title}</h1>
+        <a href="#" onClick={e => this.reset(e)}>Start again</a> | 
+        <a href="#" onClick={e => this.getMovies(e, this.state.currentGenre)}>Another movie</a>
+      </div>
+    )
   }
 
   render() {
     return (
       <>
         <div className="row">
-          {this.renderGenres()}
+          {(!this.state.currentMovie && this.renderGenres())}
+          {(this.state.currentMovie && this.renderMovie())}
         </div>
       </>
     );

@@ -4,5 +4,4 @@ import MovieFinder from './components/MovieFinder'
 
 let findafilm = document.getElementById("findafilm")
 
-
 ReactDOM.render( <MovieFinder />, findafilm )
