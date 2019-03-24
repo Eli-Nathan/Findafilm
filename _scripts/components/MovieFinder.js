@@ -13,7 +13,10 @@ class MovieFinder extends Component {
     this.state = {
       allGenres: [],
       selectedGenre: false,
-      loading: true
+      loading: true,
+      movies: true,
+      tv: false,
+      minRating: false
     }
 
     this.getGenres = this.getGenres.bind(this)
@@ -54,7 +57,7 @@ class MovieFinder extends Component {
 
   async getMovies(e, id) {
     e.preventDefault()
-    const moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en"
+    const moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en&vote_average.gte=8&original_language=en"
     let _this = this
     // Use this
     try {
@@ -160,12 +163,61 @@ class MovieFinder extends Component {
     )
   }
 
+  renderFilters = () => {
+    return (
+      <div className="filters">
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="switch-field d-inline mr-3">
+            		<input
+                  type="radio"
+                  name="movie_tv"
+                  id="moviesRadio"
+                  value="movies"
+                  checked={this.state.movies}
+                  onChange={e => this.setState({movies: true, tv: false})}
+                />
+            		<label htmlFor="moviesRadio">Movies</label>
+            		<input
+                  type="radio"
+                  name="movie_tv"
+                  id="tvRadio"
+                  value="tv"
+                  checked={this.state.tv}
+                  onChange={e => this.setState({tv: true, movies: false})}
+                />
+            		<label htmlFor="tvRadio">TV Shows</label>
+            	</div>
+              <div className="d-inline-block">
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <label className="input-group-text" htmlFor="languageSelect">Language</label>
+                  </div>
+                  <select className="custom-select" id="languageSelect">
+                    <option defaultValue>Any</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="jp">Japanese</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render() {
     return (
       <>
-        <div className="row">
-          {(!this.state.currentMovie && this.renderGenres())}
-          {(this.state.currentMovie && this.renderMovie())}
+        {this.renderFilters()}
+        <div className="container">
+          <div className="row">
+            {(!this.state.currentMovie && this.renderGenres())}
+            {(this.state.currentMovie && this.renderMovie())}
+          </div>
         </div>
       </>
     );

@@ -1,8 +1,6 @@
 // Bootstrap
 @import 'bootstrap/bootstrap.scss';
-
 $highlight: #fe3646;
-
 @import url('https://fonts.googleapis.com/css?family=Bitter:700|Mukta:400,600');
 
 body {
@@ -10,7 +8,7 @@ body {
   position: relative;
 
   &.no-scroll {
-    overflow:hidden;
+    overflow: hidden;
   }
 }
 
@@ -25,7 +23,7 @@ h6 {
 }
 
 .highlight-text {
-  color: $highlight
+  color: $highlight;
 }
 
 .genre-box {
@@ -39,7 +37,7 @@ h6 {
 
   &__overlay {
     border-radius: 4px;
-    transition: .3s;
+    transition: 0.3s;
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -58,6 +56,60 @@ h6 {
       box-shadow: none;
       color: #fff;
       text-decoration: none;
+    }
+  }
+}
+
+.filters {
+  .switch-field {
+    margin-top: 1px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .switch-field input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+  }
+
+  .switch-field label {
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: center;
+    padding: 8px 16px;
+    margin-right: -1px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    transition: all 0.1s ease-in-out;
+  }
+
+  .switch-field label:hover {
+    cursor: pointer;
+  }
+
+  .switch-field input:checked + label {
+    background-color: #a5dc86;
+    box-shadow: none;
+  }
+
+  .switch-field label:first-of-type {
+    border-radius: 4px 0 0 4px;
+  }
+
+  .switch-field label:last-of-type {
+    border-radius: 0 4px 4px 0;
+  }
+
+  .input-group {
+    margin-top: -1px;
+
+    &-text {
+      font-size: .8rem;
     }
   }
 }

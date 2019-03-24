@@ -205,10 +205,74 @@ function (_Component) {
         className: "btn btn-info"
       }, "Start again"))));
     });
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)), "renderFilters", function () {
+      return _react.default.createElement("div", {
+        className: "filters"
+      }, _react.default.createElement("div", {
+        className: "container"
+      }, _react.default.createElement("div", {
+        className: "row"
+      }, _react.default.createElement("div", {
+        className: "col-sm-12"
+      }, _react.default.createElement("div", {
+        className: "switch-field d-inline mr-3"
+      }, _react.default.createElement("input", {
+        type: "radio",
+        name: "movie_tv",
+        id: "moviesRadio",
+        value: "movies",
+        checked: _this2.state.movies,
+        onChange: function onChange(e) {
+          return _this2.setState({
+            movies: true,
+            tv: false
+          });
+        }
+      }), _react.default.createElement("label", {
+        htmlFor: "moviesRadio"
+      }, "Movies"), _react.default.createElement("input", {
+        type: "radio",
+        name: "movie_tv",
+        id: "tvRadio",
+        value: "tv",
+        checked: _this2.state.tv,
+        onChange: function onChange(e) {
+          return _this2.setState({
+            tv: true,
+            movies: false
+          });
+        }
+      }), _react.default.createElement("label", {
+        htmlFor: "tvRadio"
+      }, "TV Shows")), _react.default.createElement("div", {
+        className: "d-inline-block"
+      }, _react.default.createElement("div", {
+        className: "input-group"
+      }, _react.default.createElement("div", {
+        className: "input-group-prepend"
+      }, _react.default.createElement("label", {
+        className: "input-group-text",
+        htmlFor: "languageSelect"
+      }, "Language")), _react.default.createElement("select", {
+        className: "custom-select",
+        id: "languageSelect"
+      }, _react.default.createElement("option", {
+        defaultValue: true
+      }, "Any"), _react.default.createElement("option", {
+        value: "en"
+      }, "English"), _react.default.createElement("option", {
+        value: "fr"
+      }, "French"), _react.default.createElement("option", {
+        value: "jp"
+      }, "Japanese"))))))));
+    });
     _this2.state = {
       allGenres: [],
       selectedGenre: false,
-      loading: true
+      loading: true,
+      movies: true,
+      tv: false,
+      minRating: false
     };
     _this2.getGenres = _this2.getGenres.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)));
     _this2.getMovies = _this2.getMovies.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)));
@@ -288,7 +352,7 @@ function (_Component) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 e.preventDefault();
-                moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en";
+                moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en&vote_average.gte=8&original_language=en";
                 _this = this; // Use this
 
                 _context3.prev = 3;
@@ -371,9 +435,11 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
+      return _react.default.createElement(_react.default.Fragment, null, this.renderFilters(), _react.default.createElement("div", {
+        className: "container"
+      }, _react.default.createElement("div", {
         className: "row"
-      }, !this.state.currentMovie && this.renderGenres(), this.state.currentMovie && this.renderMovie()));
+      }, !this.state.currentMovie && this.renderGenres(), this.state.currentMovie && this.renderMovie())));
     }
   }]);
   return MovieFinder;
