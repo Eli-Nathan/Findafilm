@@ -61,3 +61,16 @@ h6 {
     }
   }
 }
+
+.movie {
+  &__image {
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.btn-main {
+  background-color: $highlight;
+  color: #fff;
+}
