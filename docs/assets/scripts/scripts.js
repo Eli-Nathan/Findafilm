@@ -164,21 +164,46 @@ function (_Component) {
       });
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)), "renderMovie", function () {
-      return _react.default.createElement("div", {
-        className: "col-sm-12"
-      }, _react.default.createElement("h1", {
-        className: "text-center"
-      }, _this2.state.currentMovie.title), _react.default.createElement("a", {
-        href: "#",
-        onClick: function onClick(e) {
-          return _this2.reset(e);
+      var imagePath = "https://image.tmdb.org/t/p/w500";
+
+      if (_this2.state.currentMovie.poster_path !== null) {
+        imagePath = imagePath + _this2.state.currentMovie.poster_path;
+      } else {
+        imagePath = "/assets/images/poster-not-found.png"; // Prepend cors.io link to dataURL if we're working locally
+
+        if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+          imagePath = imagePath;
+        } else {
+          imagePath = "/Findafilm" + imagePath;
         }
-      }, "Start again"), " |", _react.default.createElement("a", {
+      }
+
+      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
+        className: "col-sm-12 col-md-5"
+      }, _react.default.createElement("div", {
+        className: "movie__image mb-3"
+      }, _react.default.createElement("img", {
+        src: imagePath,
+        alt: _this2.state.currentMovie.title
+      }))), _react.default.createElement("div", {
+        className: "col-sm-12 col-md-7"
+      }, _react.default.createElement("h2", null, _this2.state.currentMovie.title)), _react.default.createElement("div", {
+        className: "col-sm-12"
+      }, _react.default.createElement("div", {
+        className: "text-center"
+      }, _react.default.createElement("a", {
         href: "#",
         onClick: function onClick(e) {
           return _this2.getMovies(e, _this2.state.currentGenre);
-        }
-      }, "Another movie"));
+        },
+        className: "btn btn-main mr-2"
+      }, "Another movie"), _react.default.createElement("a", {
+        href: "#",
+        onClick: function onClick(e) {
+          return _this2.reset(e);
+        },
+        className: "btn btn-info"
+      }, "Start again"))));
     });
     _this2.state = {
       allGenres: [],
@@ -263,7 +288,7 @@ function (_Component) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 e.preventDefault();
-                moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&api_key=dac5b022e22ea5e143299240ca8c8d68";
+                moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en";
                 _this = this; // Use this
 
                 _context3.prev = 3;
@@ -283,7 +308,7 @@ function (_Component) {
                             if (totalPages > 1000) totalPages = 1000;
                             randPage = Math.floor(Math.random() * (totalPages - 1) + 1);
                             randResult = Math.floor(Math.random() * (19 - 0));
-                            randMoviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&page=" + randPage + "&api_key=dac5b022e22ea5e143299240ca8c8d68";
+                            randMoviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&page=" + randPage + "&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en";
                             _context2.prev = 5;
                             _context2.next = 8;
                             return _axios.default.get(randMoviesAPI).then(function (movies) {
@@ -291,6 +316,8 @@ function (_Component) {
                                 currentMovie: movies.data.results[randResult],
                                 currentGenre: id,
                                 loading: false
+                              }, function () {
+                                return console.log(_this.state.currentMovie);
                               });
                             });
 

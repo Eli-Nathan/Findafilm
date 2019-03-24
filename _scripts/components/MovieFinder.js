@@ -54,7 +54,7 @@ class MovieFinder extends Component {
 
   async getMovies(e, id) {
     e.preventDefault()
-    const moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&api_key=dac5b022e22ea5e143299240ca8c8d68"
+    const moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en"
     let _this = this
     // Use this
     try {
@@ -64,7 +64,7 @@ class MovieFinder extends Component {
         if (totalPages > 1000) totalPages = 1000
         let randPage = Math.floor(Math.random() * (totalPages - 1) + 1)
         let randResult = Math.floor(Math.random() * (19 - 0))
-        const randMoviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&page=" + randPage +"&api_key=dac5b022e22ea5e143299240ca8c8d68"
+        const randMoviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres="+ id +"&page=" + randPage +"&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en"
 
         try {
           // Use ES7's await along with async to only return this function when it's finished getting the data
@@ -73,7 +73,7 @@ class MovieFinder extends Component {
               currentMovie: movies.data.results[randResult],
               currentGenre: id,
               loading: false
-            })
+            }, () => console.log(_this.state.currentMovie))
           })
         }
         // Console warn the error if there is one
@@ -111,12 +111,52 @@ class MovieFinder extends Component {
   }
 
   renderMovie = () => {
+    let imagePath = "https://image.tmdb.org/t/p/w500"
+    if (this.state.currentMovie.poster_path !== null) {
+      imagePath = imagePath + this.state.currentMovie.poster_path
+    }
+    else {
+      imagePath = "/assets/images/poster-not-found.png"
+      // Prepend cors.io link to dataURL if we're working locally
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        imagePath = imagePath
+      }
+      else {
+        imagePath = "/Findafilm" + imagePath
+      }
+    }
     return (
-      <div className="col-sm-12">
-        <h1 className="text-center">{this.state.currentMovie.title}</h1>
-        <a href="#" onClick={e => this.reset(e)}>Start again</a> | 
-        <a href="#" onClick={e => this.getMovies(e, this.state.currentGenre)}>Another movie</a>
-      </div>
+      <>
+        <div className="col-sm-12 col-md-5">
+          <div className="movie__image mb-3">
+            <img
+              src={imagePath}
+              alt={this.state.currentMovie.title}
+            />
+          </div>
+        </div>
+        <div className="col-sm-12 col-md-7">
+          <h2>{this.state.currentMovie.title}</h2>
+        </div>
+        <div className="col-sm-12">
+          <div className="text-center">
+            <a
+              href="#"
+              onClick={e => this.getMovies(e, this.state.currentGenre)}
+              className="btn btn-main mr-2"
+            >
+              Another movie
+            </a>
+            <a
+              href="#"
+              onClick={e => this.reset(e)}
+              className="btn btn-info"
+            >
+              Start again
+            </a>
+          </div>
+        </div>
+      </>
     )
   }
 
