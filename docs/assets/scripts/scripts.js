@@ -164,6 +164,10 @@ function (_Component) {
       });
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)), "renderMovie", function () {
+      var title;
+      var medium;
+      _this2.state.currentMovie.title ? title = _this2.state.currentMovie.title : title = _this2.state.currentMovie.name;
+      _this2.state.medium == "movie" ? medium = "movie" : medium = "tv show";
       var imagePath = "https://image.tmdb.org/t/p/w500";
 
       if (_this2.state.currentMovie.poster_path !== null) {
@@ -178,32 +182,65 @@ function (_Component) {
         }
       }
 
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
-        className: "col-sm-12 col-md-5"
-      }, _react.default.createElement("div", {
-        className: "movie__image mb-3"
-      }, _react.default.createElement("img", {
-        src: imagePath,
-        alt: _this2.state.currentMovie.title
-      }))), _react.default.createElement("div", {
-        className: "col-sm-12 col-md-7"
-      }, _react.default.createElement("h2", null, _this2.state.currentMovie.title)), _react.default.createElement("div", {
-        className: "col-sm-12"
-      }, _react.default.createElement("div", {
-        className: "text-center"
-      }, _react.default.createElement("a", {
-        href: "#",
-        onClick: function onClick(e) {
-          return _this2.getMovies(e, _this2.state.currentGenre);
-        },
-        className: "btn btn-main mr-2"
-      }, "Another movie"), _react.default.createElement("a", {
-        href: "#",
-        onClick: function onClick(e) {
-          return _this2.reset(e);
-        },
-        className: "btn btn-info"
-      }, "Start again"))));
+      if (_this2.state.currentMovie == "none") {
+        return _react.default.createElement("div", {
+          className: "col-sm-12 text-center p-2"
+        }, _react.default.createElement("h3", {
+          className: "text-center"
+        }, "Sorry! No movies found with your criteria"), _react.default.createElement("a", {
+          href: "#",
+          onClick: function onClick(e) {
+            return _this2.reset(e);
+          },
+          className: "btn btn-info"
+        }, "Start again"));
+      } else {
+        return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
+          className: "col-sm-12 col-md-5"
+        }, _react.default.createElement("div", {
+          className: "movie__image mb-3"
+        }, _react.default.createElement("img", {
+          src: imagePath,
+          alt: title
+        }))), _react.default.createElement("div", {
+          className: "col-sm-12 col-md-7"
+        }, _react.default.createElement("h2", null, title), _react.default.createElement("h4", null, "Summary"), _react.default.createElement("p", null, _this2.state.currentMovie.overview), _react.default.createElement("p", null, _react.default.createElement("strong", null, "Release date:"), " " + _this2.state.currentMovie.release_date), _react.default.createElement("p", null, _react.default.createElement("strong", null, "Rating:"), " " + _this2.state.currentMovie.vote_average + "/10")), _react.default.createElement("div", {
+          className: "col-sm-12"
+        }, _react.default.createElement("div", {
+          className: "text-center"
+        }, _react.default.createElement("a", {
+          href: "#",
+          onClick: function onClick(e) {
+            return _this2.getMovies(e, _this2.state.currentGenre);
+          },
+          className: "btn btn-main mr-2"
+        }, "Another random " + medium), _react.default.createElement("a", {
+          href: "#",
+          onClick: function onClick(e) {
+            return _this2.reset(e);
+          },
+          className: "btn btn-info"
+        }, "Start again"))));
+      }
+    });
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)), "updateFilters", function (e) {
+      _this2.setState((0, _defineProperty2.default)({}, event.target.name, event.target.value), function () {
+        if (_this2.state.currentMovie) {
+          _this2.getMovies(undefined, _this2.state.selectedGenre);
+        }
+      });
+    });
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)), "renderLanguages", function () {
+      var languageOptions = _this2.state.allLanguages.sort().map(function (language) {
+        var languageName;
+        if (language.name == "No Language") languageName = "Any";else if (language.name == "") languageName = language.english_name;else languageName = language.name;
+        return _react.default.createElement("option", {
+          key: language.iso_639_1,
+          value: language.iso_639_1
+        }, languageName);
+      });
+
+      return languageOptions;
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)), "renderFilters", function () {
       return _react.default.createElement("div", {
@@ -215,37 +252,33 @@ function (_Component) {
       }, _react.default.createElement("div", {
         className: "col-sm-12"
       }, _react.default.createElement("div", {
-        className: "switch-field d-inline mr-3"
+        className: "switch-field d-flex mb-3"
       }, _react.default.createElement("input", {
         type: "radio",
-        name: "movie_tv",
+        name: "medium",
         id: "moviesRadio",
-        value: "movies",
-        checked: _this2.state.movies,
+        value: "movie",
+        checked: _this2.state.medium == "movie",
         onChange: function onChange(e) {
-          return _this2.setState({
-            movies: true,
-            tv: false
-          });
+          return _this2.updateFilters(e);
         }
       }), _react.default.createElement("label", {
         htmlFor: "moviesRadio"
       }, "Movies"), _react.default.createElement("input", {
         type: "radio",
-        name: "movie_tv",
+        name: "medium",
         id: "tvRadio",
         value: "tv",
-        checked: _this2.state.tv,
+        checked: _this2.state.medium == "tv",
         onChange: function onChange(e) {
-          return _this2.setState({
-            tv: true,
-            movies: false
-          });
+          return _this2.updateFilters(e);
         }
       }), _react.default.createElement("label", {
         htmlFor: "tvRadio"
-      }, "TV Shows")), _react.default.createElement("div", {
-        className: "d-inline-block"
+      }, "TV Shows"))), _react.default.createElement("div", {
+        className: "col-sm-12 remainingFilters"
+      }, _react.default.createElement("div", {
+        className: "d-block d-md-inline-block mr-md-3 mb-3"
       }, _react.default.createElement("div", {
         className: "input-group"
       }, _react.default.createElement("div", {
@@ -255,51 +288,127 @@ function (_Component) {
         htmlFor: "languageSelect"
       }, "Language")), _react.default.createElement("select", {
         className: "custom-select",
-        id: "languageSelect"
+        name: "language",
+        id: "languageSelect",
+        onChange: function onChange(e) {
+          return _this2.updateFilters(e);
+        }
+      }, _this2.renderLanguages()))), _react.default.createElement("div", {
+        className: "d-block d-md-inline-block mr-md-3 mb-3"
+      }, _react.default.createElement("div", {
+        className: "input-group"
+      }, _react.default.createElement("div", {
+        className: "input-group-prepend"
+      }, _react.default.createElement("label", {
+        className: "input-group-text",
+        htmlFor: "minVotesSelect"
+      }, "Minimum votes")), _react.default.createElement("select", {
+        className: "custom-select",
+        name: "minVotes",
+        id: "minVotesSelect",
+        onChange: function onChange(e) {
+          return _this2.updateFilters(e);
+        }
       }, _react.default.createElement("option", {
-        defaultValue: true
-      }, "Any"), _react.default.createElement("option", {
-        value: "en"
-      }, "English"), _react.default.createElement("option", {
-        value: "fr"
-      }, "French"), _react.default.createElement("option", {
-        value: "jp"
-      }, "Japanese"))))))));
+        value: ""
+      }, "None"), _react.default.createElement("option", {
+        value: 100
+      }, "100"), _react.default.createElement("option", {
+        value: 200
+      }, "200"), _react.default.createElement("option", {
+        value: 300
+      }, "300"), _react.default.createElement("option", {
+        value: 400
+      }, "400"), _react.default.createElement("option", {
+        value: 500
+      }, "500"), _react.default.createElement("option", {
+        value: 600
+      }, "600"), _react.default.createElement("option", {
+        value: 700
+      }, "700"), _react.default.createElement("option", {
+        value: 800
+      }, "800"), _react.default.createElement("option", {
+        value: 900
+      }, "900"), _react.default.createElement("option", {
+        value: 1000
+      }, "1000")))), _react.default.createElement("div", {
+        className: "d-block d-md-inline-block mr-md-3 mb-3"
+      }, _react.default.createElement("div", {
+        className: "input-group"
+      }, _react.default.createElement("div", {
+        className: "input-group-prepend"
+      }, _react.default.createElement("label", {
+        className: "input-group-text",
+        htmlFor: "minRatingSelect"
+      }, "Minimum rating")), _react.default.createElement("select", {
+        className: "custom-select",
+        name: "minRating",
+        id: "minRatingSelect",
+        onChange: function onChange(e) {
+          return _this2.updateFilters(e);
+        }
+      }, _react.default.createElement("option", {
+        value: ""
+      }, "None"), _react.default.createElement("option", {
+        value: 1
+      }, "1/10"), _react.default.createElement("option", {
+        value: 2
+      }, "2/10"), _react.default.createElement("option", {
+        value: 3
+      }, "3/10"), _react.default.createElement("option", {
+        value: 4
+      }, "4/10"), _react.default.createElement("option", {
+        value: 5
+      }, "5/10"), _react.default.createElement("option", {
+        value: 6
+      }, "6/10"), _react.default.createElement("option", {
+        value: 7
+      }, "7/10"), _react.default.createElement("option", {
+        value: 8
+      }, "8/10"), _react.default.createElement("option", {
+        value: 9
+      }, "9/10"), _react.default.createElement("option", {
+        value: 10
+      }, "10/10"))))))));
     });
     _this2.state = {
       allGenres: [],
-      selectedGenre: false,
+      allLanguages: [],
+      selectedGenre: "",
       loading: true,
-      movies: true,
-      tv: false,
-      minRating: false
+      medium: "movie",
+      minVotes: "",
+      minRating: "",
+      language: "en"
     };
     _this2.getGenres = _this2.getGenres.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)));
     _this2.getMovies = _this2.getMovies.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this2)));
 
     _this2.getGenres();
 
+    _this2.getLanguages();
+
     return _this2;
   } // Remove spaces from string and conver to lower case
 
 
   (0, _createClass2.default)(MovieFinder, [{
-    key: "getGenres",
+    key: "getLanguages",
     value: function () {
-      var _getGenres = (0, _asyncToGenerator2.default)(
+      var _getLanguages = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee() {
-        var genreAPI, _this, response;
+        var languagesAPI, _this, response;
 
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                genreAPI = "https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=dac5b022e22ea5e143299240ca8c8d68";
+                languagesAPI = "https://api.themoviedb.org/3/configuration/languages?api_key=dac5b022e22ea5e143299240ca8c8d68";
                 _this = this;
                 _context.prev = 2;
                 _context.next = 5;
-                return _axios.default.get(genreAPI).then(function (genres) {
+                return _axios.default.get(languagesAPI).then(function (languages) {
                   /*
                     Set state:
                       state.apiModels = returned data (Slice is used to remove the standard "All models" option that is at the begining of every array)
@@ -308,10 +417,9 @@ function (_Component) {
                       Callback function to sanitize the models and remove any we don't have images for
                   */
                   _this.setState({
-                    allGenres: genres.data.genres.map(function (genre) {
-                      return genre;
-                    }),
-                    loading: false
+                    allLanguages: languages.data.map(function (language) {
+                      return language;
+                    })
                   });
                 });
 
@@ -333,6 +441,62 @@ function (_Component) {
         }, _callee, this, [[2, 8]]);
       }));
 
+      function getLanguages() {
+        return _getLanguages.apply(this, arguments);
+      }
+
+      return getLanguages;
+    }()
+  }, {
+    key: "getGenres",
+    value: function () {
+      var _getGenres = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2() {
+        var genreAPI, _this, response;
+
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                genreAPI = "https://api.themoviedb.org/3/genre/" + this.state.medium + "/list?language=en-US&api_key=dac5b022e22ea5e143299240ca8c8d68";
+                _this = this;
+                _context2.prev = 2;
+                _context2.next = 5;
+                return _axios.default.get(genreAPI).then(function (genres) {
+                  /*
+                    Set state:
+                      state.apiModels = returned data (Slice is used to remove the standard "All models" option that is at the begining of every array)
+                      state.loading = false (this will remove the loading indicator)
+                      ----------
+                      Callback function to sanitize the models and remove any we don't have images for
+                  */
+                  _this.setState({
+                    allGenres: genres.data.genres.map(function (genre) {
+                      return genre;
+                    }),
+                    loading: false
+                  });
+                });
+
+              case 5:
+                response = _context2.sent;
+                _context2.next = 11;
+                break;
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](2);
+                console.warn(_context2.t0);
+
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[2, 8]]);
+      }));
+
       function getGenres() {
         return _getGenres.apply(this, arguments);
       }
@@ -344,63 +508,66 @@ function (_Component) {
     value: function () {
       var _getMovies = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(e, id) {
+      _regenerator.default.mark(function _callee4(e, id) {
         var moviesAPI, _this, response;
 
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+        return _regenerator.default.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                e.preventDefault();
-                moviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en&vote_average.gte=8&original_language=en";
+                this.setState({
+                  selectedGenre: id
+                });
+                if (e !== undefined) e.preventDefault();
+                moviesAPI = "https://api.themoviedb.org/3/discover/" + this.state.medium + "?with_genres=" + id + "&api_key=dac5b022e22ea5e143299240ca8c8d68&with_original_language=" + this.state.language + "&vote_average.gte=" + this.state.minRating + "&vote_count.gte=" + this.state.minVotes;
                 _this = this; // Use this
 
-                _context3.prev = 3;
-                _context3.next = 6;
+                _context4.prev = 4;
+                _context4.next = 7;
                 return _axios.default.get(moviesAPI).then(
                 /*#__PURE__*/
                 function () {
                   var _ref = (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
-                  _regenerator.default.mark(function _callee2(movies) {
-                    var totalPages, randPage, randResult, randMoviesAPI, randResponse;
-                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                  _regenerator.default.mark(function _callee3(movies) {
+                    var foundMovie, totalPages, randPage, randResult, randMoviesAPI, randResponse;
+                    return _regenerator.default.wrap(function _callee3$(_context3) {
                       while (1) {
-                        switch (_context2.prev = _context2.next) {
+                        switch (_context3.prev = _context3.next) {
                           case 0:
                             totalPages = movies.data.total_pages;
                             if (totalPages > 1000) totalPages = 1000;
-                            randPage = Math.floor(Math.random() * (totalPages - 1) + 1);
+                            randPage = Math.floor(Math.random() * (totalPages - 1) + 2);
                             randResult = Math.floor(Math.random() * (19 - 0));
-                            randMoviesAPI = "https://api.themoviedb.org/3/discover/movie?with_genres=" + id + "&page=" + randPage + "&api_key=dac5b022e22ea5e143299240ca8c8d68&language=en";
-                            _context2.prev = 5;
-                            _context2.next = 8;
+                            randMoviesAPI = "https://api.themoviedb.org/3/discover/" + _this.state.medium + "?with_genres=" + id + "&page=" + randPage + "&api_key=dac5b022e22ea5e143299240ca8c8d68&with_original_language=" + _this.state.language + "&vote_average.gte=" + _this.state.minRating + "&vote_count.gte=" + _this.state.minVotes;
+                            _context3.prev = 5;
+                            _context3.next = 8;
                             return _axios.default.get(randMoviesAPI).then(function (movies) {
+                              if (movies.data.results[randResult] == undefined || movies.data.results[randResult] == null || movies.data.results[randResult] == []) foundMovie = "none";else foundMovie = movies.data.results[randResult];
+
                               _this.setState({
-                                currentMovie: movies.data.results[randResult],
+                                currentMovie: foundMovie,
                                 currentGenre: id,
                                 loading: false
-                              }, function () {
-                                return console.log(_this.state.currentMovie);
                               });
                             });
 
                           case 8:
-                            randResponse = _context2.sent;
-                            _context2.next = 14;
+                            randResponse = _context3.sent;
+                            _context3.next = 14;
                             break;
 
                           case 11:
-                            _context2.prev = 11;
-                            _context2.t0 = _context2["catch"](5);
-                            console.warn(_context2.t0);
+                            _context3.prev = 11;
+                            _context3.t0 = _context3["catch"](5);
+                            console.warn(_context3.t0);
 
                           case 14:
                           case "end":
-                            return _context2.stop();
+                            return _context3.stop();
                         }
                       }
-                    }, _callee2, this, [[5, 11]]);
+                    }, _callee3, this, [[5, 11]]);
                   }));
 
                   return function (_x3) {
@@ -408,22 +575,22 @@ function (_Component) {
                   };
                 }());
 
-              case 6:
-                response = _context3.sent;
-                _context3.next = 12;
+              case 7:
+                response = _context4.sent;
+                _context4.next = 13;
                 break;
 
-              case 9:
-                _context3.prev = 9;
-                _context3.t0 = _context3["catch"](3);
-                console.warn(_context3.t0);
+              case 10:
+                _context4.prev = 10;
+                _context4.t0 = _context4["catch"](4);
+                console.warn(_context4.t0);
 
-              case 12:
+              case 13:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this, [[3, 9]]);
+        }, _callee4, this, [[4, 10]]);
       }));
 
       function getMovies(_x, _x2) {

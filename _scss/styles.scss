@@ -61,55 +61,71 @@ h6 {
 }
 
 .filters {
+  display: flex;
+
   .switch-field {
     margin-top: 1px;
     display: flex;
+    justify-content: center;
     overflow: hidden;
+
+    input {
+      position: absolute !important;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      width: 1px;
+      border: 0;
+      overflow: hidden;
+
+      &:checked + label {
+        background-color: $highlight;
+        color: #fff;
+        box-shadow: none;
+      }
+    }
+
+    label {
+      background-color: #e9ecef;
+      color: #495057;
+      font-size: 14px;
+      text-align: center;
+      padding: 6px 12px;
+      margin-right: -1px;
+      margin-bottom: 0;
+      border: 1px solid #ced4da;
+      transition: all 0.1s ease-in-out;
+      width: 50%;
+
+      @include media-breakpoint-up(sm) {
+        width: auto;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:first-of-type {
+        border-radius: 4px 0 0 4px;
+      }
+
+      &:last-of-type {
+        border-radius: 0 4px 4px 0;
+      }
+    }
   }
 
-  .switch-field input {
-    position: absolute !important;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
-    width: 1px;
-    border: 0;
-    overflow: hidden;
-  }
+  .remainingFilters {
+    display: block;
 
-  .switch-field label {
-    background-color: #e4e4e4;
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 14px;
-    line-height: 1.45;
-    text-align: center;
-    padding: 8px 16px;
-    margin-right: -1px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    transition: all 0.1s ease-in-out;
-  }
+    @include media-breakpoint-up(md) {
+      display: flex;
+      justify-content: center;
+    }
 
-  .switch-field label:hover {
-    cursor: pointer;
-  }
-
-  .switch-field input:checked + label {
-    background-color: #a5dc86;
-    box-shadow: none;
-  }
-
-  .switch-field label:first-of-type {
-    border-radius: 4px 0 0 4px;
-  }
-
-  .switch-field label:last-of-type {
-    border-radius: 0 4px 4px 0;
-  }
-
-  .input-group {
-    margin-top: -1px;
-
-    &-text {
-      font-size: .8rem;
+    .input-group {
+      &-text {
+        font-size: 14px;
+      }
     }
   }
 }
